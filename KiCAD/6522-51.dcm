@@ -1,0 +1,45 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP 6822
+D Peripheral Interface Adapter 1MHz, DIP-40
+K PIA
+F http://pdf1.alldatasheet.com/datasheet-pdf/view/135452/MOTOROLA/MC6822.html
+$ENDCMP
+#
+$CMP MC68A21
+D Peripheral Interface Adapter 1.5MHz, DIP-40
+K PIA
+F http://pdf.datasheetcatalog.com/datasheet/motorola/6821.pdf
+$ENDCMP
+#
+$CMP MC68A50
+D Asynchronous Communications Interface Adapter 1.5MHz, DIP-40
+K ACIA
+F http://pdf.datasheetcatalog.com/datasheet/motorola/MC6850.pdf
+$ENDCMP
+#
+$CMP MC68B21
+D Peripheral Interface Adapter 2MHz, DIP-40
+K PIA
+F http://pdf.datasheetcatalog.com/datasheet/motorola/6821.pdf
+$ENDCMP
+#
+$CMP MC68B50
+D Asynchronous Communications Interface Adapter 2MHz, DIP-40
+K ACIA
+F http://pdf.datasheetcatalog.com/datasheet/motorola/MC6850.pdf
+$ENDCMP
+#
+$CMP W65C22
+D Peripheral Interface Adapter 1MHz, DIP-40
+K PIA
+F http://pdf.datasheetcatalog.com/datasheet/motorola/6821.pdf
+$ENDCMP
+#
+$CMP W65C51
+D Asynchronous Communications Interface Adapter 1MHz, DIP-40
+K ACIA
+F http://pdf.datasheetcatalog.com/datasheet/motorola/MC6850.pdf
+$ENDCMP
+#
+#End Doc Library
