@@ -1,4 +1,4 @@
- AS V1.42 Beta [Bld 269] - Source File out-6502.asm - Page 1 - 05/19/24 10:14:08
+ AS V1.42 Beta [Bld 269] - Source File out-6502.asm - Page 1 - 05/19/24 16:28:27
 
 
     1/   0 :                            	CPU	6502
@@ -23,7 +23,7 @@
    20/1600 :                            	ORG	$1600
    21/1600 :                            
    22/1600 :                            CSTART:
-   23/1600 : A9 81                      	LDA	#$81
+   23/1600 : A9 00                      	LDA	#0
    24/1602 : 8D 00 01                   	STA	WK_CNT
    25/1605 :                            ;
    26/1605 : 20 93 16                   	JSR WAIT
@@ -52,140 +52,121 @@
    49/1634 :                            
    50/1634 :                            ;
    51/1634 :                            	
-   52/1634 :                            ;CSTART:
-   53/1634 :                            ;	LDX	#$FF
-   54/1634 :                            ;	TXS
-   55/1634 :                            ;	JSR	INIT
-   56/1634 :                            ;LOOP:
-   57/1634 :                            ;	JSR	CONIN
-   58/1634 :                            ;	CMP	#'#'
-   59/1634 :                            ;	BEQ	QUIT
-   60/1634 :                            ;	JSR	CONOUT
- AS V1.42 Beta [Bld 269] - Source File out-6502.asm - Page 2 - 05/19/24 10:14:08
+   52/1634 :                            INIT_ACIA:
+   53/1634 : A9 1E                      	LDA	#ACCR_V
+   54/1636 : 8D 03 12                   	STA	ACIACR
+   55/1639 : A9 0B                      	LDA	#ACCM_V
+   56/163B : 8D 02 12                   	STA	ACIACM
+   57/163E : 60                         	RTS
+   58/163F :                            	
+   59/163F :                            CONIN:
+   60/163F : AD 01 12                   	LDA	ACIASR
+ AS V1.42 Beta [Bld 269] - Source File out-6502.asm - Page 2 - 05/19/24 16:28:27
 
 
-   61/1634 :                            ;	JMP	LOOP
-   62/1634 :                            ;QUIT:
-   63/1634 :                            ;	BRK
-   64/1634 :                            
-   65/1634 :                            
-   66/1634 :                            INIT_ACIA:
-   67/1634 : A9 1E                      	LDA	#ACCR_V
-   68/1636 : 8D 03 12                   	STA	ACIACR
-   69/1639 : A9 0B                      	LDA	#ACCM_V
-   70/163B : 8D 02 12                   	STA	ACIACM
-   71/163E : 60                         	RTS
-   72/163F :                            	
-   73/163F :                            CONIN:
-   74/163F : AD 01 12                   	LDA	ACIASR
-   75/1642 : 29 08                      	AND	#$08
-   76/1644 : F0 F9                      	BEQ	CONIN
-   77/1646 : AD 00 12                   	LDA	ACIADR
-   78/1649 : 60                         	RTS
-   79/164A :                            	
-   80/164A :                            CONST:
-   81/164A : AD 01 12                   	LDA	ACIASR
-   82/164D : 29 08                      	AND	#$08
-   83/164F : 4A                         	LSR	A
-   84/1650 : 4A                         	LSR	A
-   85/1651 : 4A                         	LSR	A
-   86/1652 : 60                         	RTS
-   87/1653 :                            	
-   88/1653 :                            CONOUT:
-   89/1653 :                            ;	PHA
-   90/1653 :                            ;CO0:
-   91/1653 :                            ;	LDA	ACIASR
-   92/1653 :                            ;	AND	#$10
-   93/1653 :                            ;	BEQ	CO0
-   94/1653 :                            ;	PLA
-   95/1653 : 8D 00 12                   	STA	ACIADR
-   96/1656 : 20 5A 16                   	JSR     DELAY_6551
-   97/1659 : 60                         	RTS
-   98/165A :                            
-   99/165A :                            DELAY_6551:
-  100/165A : 98                         	TYA
-  101/165B : 48                         	PHA
-  102/165C : 8A                         	TXA
-  103/165D : 48                         	PHA
-  104/165E : A0 04                      DELAY_LOOP   LDY   #4    ;Get delay value (clock rate in MHz 2 clock cycles)
-  105/1660 :                            ;
-  106/1660 : A2 68                      MINIDLY   LDX   #$68      ;Seed X reg
-  107/1662 : CA                         DELAY_1   DEX         ;Decrement low index
-  108/1663 : D0 FD                        BNE   DELAY_1   ;Loop back until done
-  109/1665 :                            ;
-  110/1665 : 88                           DEY         ;Decrease by one
-  111/1666 : D0 F8                        BNE   MINIDLY   ;Loop until done
-  112/1668 : 68                         	PLA
-  113/1669 : AA                         	TAX
-  114/166A : 68                         	PLA
-  115/166B : A8                         	TAY
-  116/166C : 60                         DELAY_DONE   RTS         ;Delay done, return
-  117/166D :                            
-  118/166D :                            RIOT_INIT:
-  119/166D : A9 FF                      	LDA	#$FF
-  120/166F : 8D 81 10                   	STA	RIOT_DDR_A
- AS V1.42 Beta [Bld 269] - Source File out-6502.asm - Page 3 - 05/19/24 10:14:08
+   61/1642 : 29 08                      	AND	#$08
+   62/1644 : F0 F9                      	BEQ	CONIN
+   63/1646 : AD 00 12                   	LDA	ACIADR
+   64/1649 : 60                         	RTS
+   65/164A :                            	
+   66/164A :                            CONST:
+   67/164A : AD 01 12                   	LDA	ACIASR
+   68/164D : 29 08                      	AND	#$08
+   69/164F : 4A                         	LSR	A
+   70/1650 : 4A                         	LSR	A
+   71/1651 : 4A                         	LSR	A
+   72/1652 : 60                         	RTS
+   73/1653 :                            	
+   74/1653 :                            CONOUT:
+   75/1653 :                            ;	PHA
+   76/1653 :                            ;CO0:
+   77/1653 :                            ;	LDA	ACIASR
+   78/1653 :                            ;	AND	#$10
+   79/1653 :                            ;	BEQ	CO0
+   80/1653 :                            ;	PLA
+   81/1653 : 8D 00 12                   	STA	ACIADR
+   82/1656 : 20 5A 16                   	JSR     DELAY_6551
+   83/1659 : 60                         	RTS
+   84/165A :                            
+   85/165A :                            DELAY_6551:
+   86/165A : 98                         	TYA
+   87/165B : 48                         	PHA
+   88/165C : 8A                         	TXA
+   89/165D : 48                         	PHA
+   90/165E : A0 04                      DELAY_LOOP   LDY   #4    ;Get delay value (clock rate in MHz 2 clock cycles)
+   91/1660 :                            ;
+   92/1660 : A2 68                      MINIDLY   LDX   #$68      ;Seed X reg
+   93/1662 : CA                         DELAY_1   DEX         ;Decrement low index
+   94/1663 : D0 FD                        BNE   DELAY_1   ;Loop back until done
+   95/1665 :                            ;
+   96/1665 : 88                           DEY         ;Decrease by one
+   97/1666 : D0 F8                        BNE   MINIDLY   ;Loop until done
+   98/1668 : 68                         	PLA
+   99/1669 : AA                         	TAX
+  100/166A : 68                         	PLA
+  101/166B : A8                         	TAY
+  102/166C : 60                         DELAY_DONE   RTS         ;Delay done, return
+  103/166D :                            
+  104/166D :                            RIOT_INIT:
+  105/166D : A9 FF                      	LDA	#$FF
+  106/166F : 8D 81 10                   	STA	RIOT_DDR_A
+  107/1672 : 8D 83 10                   	STA	RIOT_DDR_B
+  108/1675 : 60                         	RTS
+  109/1676 :                            
+  110/1676 :                            RIOT_OUT:
+  111/1676 : 8D 80 10                   	STA	RIOT_DATA_A
+  112/1679 : 8D 82 10                   	STA	RIOT_DATA_B
+  113/167C : 60                         	RTS
+  114/167D :                            
+  115/167D :                            RIOT_55_AA:
+  116/167D : A9 55                      	LDA #$55
+  117/167F : 8D 80 10                   	STA	RIOT_DATA_A
+  118/1682 : A9 AA                      	LDA #$AA
+  119/1684 : 8D 82 10                   	STA	RIOT_DATA_B
+  120/1687 : 60                         	RTS
+ AS V1.42 Beta [Bld 269] - Source File out-6502.asm - Page 3 - 05/19/24 16:28:27
 
 
-  121/1672 : 8D 83 10                   	STA	RIOT_DDR_B
-  122/1675 : 60                         	RTS
-  123/1676 :                            
-  124/1676 :                            RIOT_OUT:
-  125/1676 : 8D 80 10                   	STA	RIOT_DATA_A
-  126/1679 : 8D 82 10                   	STA	RIOT_DATA_B
-  127/167C : 60                         	RTS
-  128/167D :                            
-  129/167D :                            RIOT_55_AA:
-  130/167D : A9 55                      	LDA #$55
-  131/167F : 8D 80 10                   	STA	RIOT_DATA_A
-  132/1682 : A9 AA                      	LDA #$AA
-  133/1684 : 8D 82 10                   	STA	RIOT_DATA_B
-  134/1687 : 60                         	RTS
-  135/1688 :                            
-  136/1688 :                            RIOT_AA_55:
-  137/1688 : A9 AA                      	LDA #$AA
-  138/168A : 8D 80 10                   	STA	RIOT_DATA_A
-  139/168D : A9 55                      	LDA #$55
-  140/168F : 8D 82 10                   	STA	RIOT_DATA_B
-  141/1692 : 60                         	RTS
-  142/1693 :                            ;
-  143/1693 :                            ; ループで待ち
-  144/1693 :                            ;
-  145/1693 :                            WAIT:
-  146/1693 : A0 FF                         LDY   #$FF    ;Get delay value (clock rate in MHz 2 clock cycles)
-  147/1695 : A2 FF                      .LOOP1:  LDX   #$FF      ;Seed X reg
-  148/1697 : CA                         .LOOP2   DEX         ;Decrement low index
-  149/1698 : D0 FD                        BNE   .LOOP2   ;Loop back until done
-  150/169A :                            ;
-  151/169A : 88                           DEY         ;Decrease by one
-  152/169B : D0 F8                        BNE   .LOOP1   ;Loop until done
-  153/169D :                            
-  154/169D : A9 55                      	LDA #$55
-  155/169F : 8D 80 10                   	STA	RIOT_DATA_A
-  156/16A2 : A9 AA                      	LDA #$AA
-  157/16A4 : 8D 82 10                   	STA	RIOT_DATA_B
-  158/16A7 : 60                         	RTS
-  159/16A8 :                            
-  160/16A8 :                            TRACE:
-  161/16A8 : 20 76 16                   	JSR RIOT_OUT
-  162/16AB : 20 93 16                   	JSR WAIT
-  163/16AE : 60                         	RTS
-  164/16AF :                            
-  165/16AF :                            BRKENT:
-  166/16AF : 40                         	RTI
-  167/16B0 :                            
-  168/16B0 :                            	;;
-  169/16B0 :                            	;; Vector area
-  170/16B0 :                            	;; 
-  171/16B0 :                            
-  172/1FFA :                            	ORG	$1FFA
-  173/1FFA :                            
-  174/1FFA : 00 00                      	FDB	$0000		; NMI
-  175/1FFC : 00 16                      	FDB	CSTART		; RESET
-  176/1FFE : AF 16                      	FDB	BRKENT		; IRQ/BRK
-  177/2000 :                            
-  178/2000 :                            	END
- AS V1.42 Beta [Bld 269] - Source File out-6502.asm - Page 4 - 05/19/24 10:14:08
+  121/1688 :                            
+  122/1688 :                            RIOT_AA_55:
+  123/1688 : A9 AA                      	LDA #$AA
+  124/168A : 8D 80 10                   	STA	RIOT_DATA_A
+  125/168D : A9 55                      	LDA #$55
+  126/168F : 8D 82 10                   	STA	RIOT_DATA_B
+  127/1692 : 60                         	RTS
+  128/1693 :                            ;
+  129/1693 :                            ; ループで待ち
+  130/1693 :                            ;
+  131/1693 :                            WAIT:
+  132/1693 : A0 FF                         LDY   #$FF    ;Get delay value (clock rate in MHz 2 clock cycles)
+  133/1695 : A2 FF                      .LOOP1:  LDX   #$FF      ;Seed X reg
+  134/1697 : CA                         .LOOP2:   DEX         ;Decrement low index
+  135/1698 : D0 FD                        BNE   .LOOP2   ;Loop back until done
+  136/169A :                            ;
+  137/169A : 88                           DEY         ;Decrease by one
+  138/169B : D0 F8                        BNE   .LOOP1   ;Loop until done
+  139/169D : 60                           RTS
+  140/169E :                            
+  141/169E :                            TRACE:
+  142/169E : 20 76 16                   	JSR RIOT_OUT
+  143/16A1 : 20 93 16                   	JSR WAIT
+  144/16A4 : 60                         	RTS
+  145/16A5 :                            
+  146/16A5 :                            BRKENT:
+  147/16A5 : 40                         	RTI
+  148/16A6 :                            
+  149/16A6 :                            	;;
+  150/16A6 :                            	;; Vector area
+  151/16A6 :                            	;; 
+  152/16A6 :                            
+  153/1FFA :                            	ORG	$1FFA
+  154/1FFA :                            
+  155/1FFA : 00 00                      	FDB	$0000		; NMI
+  156/1FFC : 00 16                      	FDB	CSTART		; RESET
+  157/1FFE : A5 16                      	FDB	BRKENT		; IRQ/BRK
+  158/2000 :                            
+  159/2000 :                            	END
+ AS V1.42 Beta [Bld 269] - Source File out-6502.asm - Page 4 - 05/19/24 16:28:27
 
 
   Symbol Table (* = unused):
@@ -195,7 +176,7 @@
  ACIACM :                      1202 - |  ACIACR :                      1203 - |
  ACIADR :                      1200 - |  ACIASR :                      1201 - |
 *ARCHITECTURE :                                      "x86_64-unknown-linux" - |
- BRKENT :                      16AF C | *CASESENSITIVE :                  0 - |
+ BRKENT :                      16A5 C | *CASESENSITIVE :                  0 - |
  CONIN :                       163F C |  CONOUT :                      1653 C |
 *CONST :                       164A C | *CONSTPI :        3.141592653589793 - |
  CSTART :                      1600 C |  CSTART.LOOP :                 161A C |
@@ -211,8 +192,8 @@
  RIOT_DATA_A :                 1080 - |  RIOT_DATA_B :                 1082 - |
  RIOT_DDR_A :                  1081 - |  RIOT_DDR_B :                  1083 - |
  RIOT_INIT :                   166D C |  RIOT_OUT :                    1676 C |
-*TARGET :                    "6502" - | *TIME :                  "10:14:08" - |
-*TRACE :                       16A8 C | *TRUE :                           1 - |
+*TARGET :                    "6502" - | *TIME :                  "16:28:27" - |
+*TRACE :                       169E C | *TRUE :                           1 - |
 *VERSION :                     142F - |  WAIT :                        1693 C |
  WAIT.LOOP1 :                  1695 C |  WAIT.LOOP2 :                  1697 C |
  WK_CNT :                       100 C |
@@ -220,7 +201,7 @@
      48 symbols
      20 unused symbols
 
- AS V1.42 Beta [Bld 269] - Source File out-6502.asm - Page 5 - 05/19/24 10:14:08
+ AS V1.42 Beta [Bld 269] - Source File out-6502.asm - Page 5 - 05/19/24 16:28:27
 
 
   Code Pages:
@@ -230,9 +211,9 @@ STANDARD (0 changed characters)
 
 1 code page
 
-0.06 seconds assembly time
+0.11 seconds assembly time
 
-    180 lines source file
+    161 lines source file
       2 passes
       0 errors
       0 warnings

@@ -20,7 +20,7 @@ WK_CNT:	RMB 1
 	ORG	$1600
 
 CSTART:
-	LDA	#$81
+	LDA	#0
 	STA	WK_CNT
 ;
 	JSR WAIT
@@ -131,12 +131,12 @@ RIOT_AA_55:
 WAIT:
    LDY   #$FF    ;Get delay value (clock rate in MHz 2 clock cycles)
 .LOOP1:  LDX   #$FF      ;Seed X reg
-.LOOP2   DEX         ;Decrement low index
+.LOOP2:   DEX         ;Decrement low index
   BNE   .LOOP2   ;Loop back until done
 ;
   DEY         ;Decrease by one
   BNE   .LOOP1   ;Loop until done
-　RTS
+  RTS
 
 TRACE:
 	JSR RIOT_OUT
