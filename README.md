@@ -10,6 +10,10 @@
 
 ![](image/K6504-SBC.jpg)
 
+## 基板製造データ
+
+* プリント基板を製造するには、KiCAD/PCB フォルダに入っているzipファイルをお使いください。
+
 ## 部品表
 
 [KiCAD/K6504-SBC.csv](KiCAD/K6504-SBC.csv)
